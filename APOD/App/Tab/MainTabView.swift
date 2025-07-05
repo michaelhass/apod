@@ -43,13 +43,8 @@ struct MainTabView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $selectedTab) {
-                ForEach(availableTabs, id: \.self) { tab in
-                    content(for: tab)
-                        .id(selectedTab)
-               }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
+            content(for: selectedTab)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             MainTabBar(availableTabs: availableTabs, selectedTab: $selectedTab)
         }
