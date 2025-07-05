@@ -8,7 +8,7 @@
 import Foundation
 
 enum HTTRequestInterceptor {
-    typealias Handler = (HTTPURLRequestable) -> HTTPURLRequestable
+    typealias Handler = @Sendable (HTTPURLRequestable) -> HTTPURLRequestable
 
     static func append(queryItems: [URLQueryItem]) -> Handler {
         { request in
@@ -22,6 +22,14 @@ enum HTTRequestInterceptor {
         { request in
             var request = HTTPURLRequest(requestable: request)
             request.path += prefix
+            return request
+        }
+    }
+
+    static func setContentType(_ contentType: HTTPContentType) -> Handler {
+        { request in
+            var request = HTTPURLRequest(requestable: request)
+            request.contentType = contentType
             return request
         }
     }

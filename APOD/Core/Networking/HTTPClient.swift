@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-protocol HTTPClient {
+protocol HTTPClient: Sendable {
     var interceptors: [HTTRequestInterceptor.Handler] { get }
 
     func request<T: Decodable>(
@@ -54,6 +54,7 @@ final class URLSessionHTTPClient: HTTPClient {
             let request = try interceptors
                 .reduce(requestable) { result, interceptor in interceptor(result) }
                 .asURLRequest(baseURL: baseURL)
+            logger.debug("Performing request: \(request)")
             let (data, _) = try await session.data(for: request)
             return try decoder.decode(T.self, from: data)
         } catch {

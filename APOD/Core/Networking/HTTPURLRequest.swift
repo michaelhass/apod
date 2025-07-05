@@ -6,43 +6,22 @@
 //
 import Foundation
 
-protocol HTTPURLRequestable {
+protocol HTTPURLRequestable: Sendable {
     var path: String { get }
     var httpMethod: HTTPMethod { get }
     var bodyData: Data? { get }
     var query: [URLQueryItem] { get }
     var timeoutInterval: TimeInterval { get }
     var contentType: HTTPContentType? { get }
-    var responseDecoder: Decoder { get }
 
     func asURLRequest(baseURL: URL) throws -> URLRequest
 }
 
-struct HTTPURLRequest: HTTPURLRequestable {
-    var path: String
-    var httpMethod: HTTPMethod
-    var bodyData: Data?
-    var query: [URLQueryItem]
-    var timeoutInterval: TimeInterval
-    var contentType: HTTPContentType?
-    var responseDecoder: Decoder
-}
-
-extension HTTPURLRequest {
-    init(requestable: any HTTPURLRequestable) {
-        self.path = requestable.path
-        self.httpMethod = requestable.httpMethod
-        self.bodyData = requestable.bodyData
-        self.query = requestable.query
-        self.timeoutInterval = requestable.timeoutInterval
-        self.contentType = requestable.contentType
-        self.responseDecoder = requestable.responseDecoder
-    }
-}
-
 extension HTTPURLRequestable {
+    var httpMethod: HTTPMethod { .get }
+    var bodyData: Data? { nil }
     var timeoutInterval: TimeInterval { 30 }
-    var contentType: HTTPContentType { .json }
+    var contentType: HTTPContentType? { .json }
     var query: [URLQueryItem] { [] }
 
     func asURLRequest(baseURL: URL) throws -> URLRequest {
@@ -59,6 +38,26 @@ extension HTTPURLRequestable {
             request.setValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
         }
         return request
+    }
+}
+
+struct HTTPURLRequest: HTTPURLRequestable {
+    var path: String
+    var httpMethod: HTTPMethod
+    var bodyData: Data?
+    var query: [URLQueryItem]
+    var timeoutInterval: TimeInterval
+    var contentType: HTTPContentType?
+}
+
+extension HTTPURLRequest {
+    init(requestable: any HTTPURLRequestable) {
+        self.path = requestable.path
+        self.httpMethod = requestable.httpMethod
+        self.bodyData = requestable.bodyData
+        self.query = requestable.query
+        self.timeoutInterval = requestable.timeoutInterval
+        self.contentType = requestable.contentType
     }
 }
 
