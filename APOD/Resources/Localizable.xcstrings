@@ -15,9 +15,6 @@
         }
       }
     },
-    "Click me" : {
-
-    },
     "Hello, World!" : {
       "extractionState" : "manual",
       "localizations" : {

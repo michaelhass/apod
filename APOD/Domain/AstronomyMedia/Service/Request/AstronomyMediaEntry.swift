@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AstronomyMediaEntry: Decodable {
+struct AstronomyMediaEntry: Decodable, Sendable {
     let title: String
     let url: URL
     let date: Date
