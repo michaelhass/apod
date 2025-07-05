@@ -41,7 +41,7 @@ struct AstronomyMediaService {
 
 extension AstronomyMediaService {
 
-    func requestMedia(for date: Date) async throws -> GetAstronomyMediaResponse {
+    func fetchMedia(for date: Date) async throws -> GetAstronomyMediaResponse {
         let dateString = Self.dateFormatter.string(from: date)
         let request = GetAstronomyMediaRequest(date: dateString)
         return try await httpClient.request(

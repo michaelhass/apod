@@ -13,6 +13,8 @@ struct MediaOfTheDayPage: View {
 
     @State
     private var isPresentingInformation: Bool = false
+    @State
+    private var selectedDate: Date?
 
     var formattedMediaEntry: MediaEntryTextFormatter? {
         astronomyMedia.mediaOfTheDay.map { MediaEntryTextFormatter(mediaEntry: $0) }
@@ -33,11 +35,15 @@ struct MediaOfTheDayPage: View {
                 EmptyView()
             }
         })
-        .task {
-            guard astronomyMedia.mediaOfTheDay == nil else { return }
-            try? await astronomyMedia.fetchMediaOfTheDay()
+        .task(id: selectedDate) {
+            guard let selectedDate else {
+                selectedDate = astronomyMedia.mediaOfTheDay?.date ?? .now
+                return
+            }
+            let mediaOfTheDayDate = astronomyMedia.mediaOfTheDay?.date ?? .distantFuture
+            guard !selectedDate.isInSameDayAs(mediaOfTheDayDate) else { return }
+            try? await astronomyMedia.fetchMedia(for: selectedDate)
         }
-
     }
 
     @ViewBuilder
@@ -48,18 +54,20 @@ struct MediaOfTheDayPage: View {
                     .lineLimit(1)
                     .font(.title)
                     .foregroundStyle(Color.titleText)
+                    .shadow(color: .background, radius: 2)
 
                 HStack {
-                    Button(action: {}) {
-                        Text(mediaEntry.date)
-                            .font(.body)
-                            .padding(4)
-                    }
-                    .foregroundStyle(Color.primaryActionText)
-                    .background(Color.primaryAction)
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
-
                     Spacer()
+
+                    DatePicker(
+                        "",
+                        selection: .init(
+                            get: { selectedDate ?? .now },
+                            set: { selectedDate = $0 }
+                        ),
+                        in: ...Date.now,
+                        displayedComponents: [.date]
+                    )
 
                     Button(action: { isPresentingInformation.toggle() }) {
                         Image(systemName: "info.circle")
@@ -72,9 +80,6 @@ struct MediaOfTheDayPage: View {
                 }
             }
             .padding()
-            .background {
-                Color.background.opacity(0.3)
-            }
         } else {
             EmptyView()
         }

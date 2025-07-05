@@ -18,7 +18,7 @@ final class AstronomyMedia: ObservableObject {
         self.mediaService = mediaService
     }
 
-    func fetchMediaOfTheDay() async throws {
-        mediaOfTheDay = try await mediaService.requestMedia(for: .now)
+    func fetchMedia(for date: Date) async throws {
+        mediaOfTheDay = try await mediaService.fetchMedia(for: date)
     }
 }
