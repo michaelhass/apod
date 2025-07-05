@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F2726A6B2E192EEA00E25ADC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F2726A6A2E192EEA00E25ADC /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		F267E6972E16FC660064A7B9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -19,6 +23,7 @@
 /* Begin PBXFileReference section */
 		F267E6892E16FC640064A7B9 /* APOD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APOD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F267E6962E16FC660064A7B9 /* APODTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = APODTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2726A6A2E192EEA00E25ADC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -55,6 +60,7 @@
 		F267E6802E16FC640064A7B9 = {
 			isa = PBXGroup;
 			children = (
+				F2726A6A2E192EEA00E25ADC /* README.md */,
 				F267E68B2E16FC640064A7B9 /* APOD */,
 				F267E6992E16FC660064A7B9 /* APODTests */,
 				F267E68A2E16FC640064A7B9 /* Products */,
@@ -162,6 +168,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2726A6B2E192EEA00E25ADC /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
