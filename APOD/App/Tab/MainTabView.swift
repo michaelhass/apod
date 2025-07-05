@@ -9,27 +9,61 @@ import SwiftUI
 
 enum MainTab: CaseIterable {
     case apod
-    case info
+    case about
+
+    var systemImageName: String {
+        switch self {
+        case .apod: "star"
+        case .about: "questionmark.circle"
+        }
+    }
+}
+
+@MainActor
+protocol MainTabContentProvider {
+    var tab: MainTab { get }
+
+    associatedtype Content: View
+
+    @ViewBuilder
+    func content() -> Content
 }
 
 struct MainTabView: View {
-    let availableTabs: [MainTab]
     @State
-    private var selectedTab: MainTab = .apod
+    private var selectedTab: MainTab
+    private let availableTabs: [MainTab]
+    private let contentProviders: [any MainTabContentProvider]
+
+    init(initialTab: MainTab, contentProviders: [any MainTabContentProvider]) {
+        self.selectedTab = initialTab
+        self.availableTabs = contentProviders.compactMap(\.tab)
+        self.contentProviders = contentProviders
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 ForEach(availableTabs, id: \.self) { tab in
-                    Text("Hello, World!")
-                        .foregroundStyle(Color.primaryText)
-                }
-                .id(selectedTab)
+                    content(for: tab)
+                        .id(selectedTab)
+               }
             }
+            .tabViewStyle(.page(indexDisplayMode: .never))
 
             MainTabBar(availableTabs: availableTabs, selectedTab: $selectedTab)
         }
         .background(Color.background)
+    }
+
+    @ViewBuilder
+    func content(for tab: MainTab) -> some View {
+        if let provider = contentProviders.first(where: { $0.tab == tab }) {
+            AnyView(provider.content())
+        } else {
+            EmptyView()
+        }
+
     }
 }
 
@@ -54,10 +88,13 @@ struct MainTabBar: View {
         .padding(.horizontal)
         .background(
             GeometryReader { reader in
-                Color.gray.opacity(0.4)
+                Color.gray
+                    .blur(radius: 12)
                     .frame(height: reader.size.height - 8)
                     .frame(maxWidth: .infinity)
+                    .background(.thickMaterial)
                     .clipShape(Capsule())
+                    .opacity(0.4)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         )
@@ -89,15 +126,10 @@ struct MainTabBar: View {
     }
 
     func icon(for tab: MainTab) -> some View {
-        let image = switch tab {
-        case .apod: Image(systemName: "star")
-        case .info: Image(systemName: "info.circle")
-        }
-        return image .dynamicTypeSize(DynamicTypeSize.xxLarge...DynamicTypeSize.accessibility3)
+        Image(
+            systemName: tab.systemImageName
+        )
+        .dynamicTypeSize(DynamicTypeSize.xxLarge...DynamicTypeSize.accessibility3)
     }
 
-}
-
-#Preview {
-    MainTabView(availableTabs: MainTab.allCases)
 }

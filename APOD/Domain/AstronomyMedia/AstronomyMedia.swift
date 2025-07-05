@@ -12,7 +12,7 @@ final class AstronomyMedia: ObservableObject {
     @Published
     private(set) var mediaOfTheDay: AstronomyMediaEntry?
 
-    let mediaService: AstronomyMediaService
+    private let mediaService: AstronomyMediaService
 
     init(mediaService: AstronomyMediaService) {
         self.mediaService = mediaService
