@@ -21,7 +21,7 @@ struct MainTabView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 ForEach(availableTabs, id: \.self) { tab in
-                    Text("\(tab)")
+                    Text("Hello, World!")
                         .foregroundStyle(Color.primaryText)
                 }
                 .id(selectedTab)
