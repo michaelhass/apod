@@ -9,10 +9,10 @@ import Foundation
 import OSLog
 
 protocol HTTPClient {
-    var interceptors: [HTTRequestInterceptor] { get }
+    var interceptors: [HTTRequestInterceptor.Handler] { get }
 
     func request<T: Decodable>(
-        _ requestable: some URLRequestable,
+        _ requestable: some HTTPURLRequestable,
         for responseType: T.Type,
         decoder: HTTPResponseDecoder
     ) async throws -> T
@@ -20,24 +20,24 @@ protocol HTTPClient {
 
 extension HTTPClient {
     func request<T: Decodable>(
-        _ requestable: some URLRequestable,
+        _ requestable: some HTTPURLRequestable,
         for responseType: T.Type
     ) async throws -> T {
         try await request(requestable, for: responseType, decoder: JSONDecoder())
     }
 }
 
-final class URLSessionHTTPClient {
+final class URLSessionHTTPClient: HTTPClient {
     let baseURL: URL
     let session: URLSession
     let logger: Logger
-    let interceptors: [HTTRequestInterceptor]
+    let interceptors: [HTTRequestInterceptor.Handler]
 
     init(
         baseURL: URL,
         session: URLSession = .shared,
         logger: Logger = .init(),
-        interceptors: [HTTRequestInterceptor] = []
+        interceptors: [HTTRequestInterceptor.Handler] = []
     ) {
         self.baseURL = baseURL
         self.session = session
@@ -46,7 +46,7 @@ final class URLSessionHTTPClient {
     }
 
     func request<T: Decodable>(
-        _ requestable: some URLRequestable,
+        _ requestable: some HTTPURLRequestable,
         for responseType: T.Type,
         decoder: HTTPResponseDecoder
     ) async throws -> T {
@@ -54,7 +54,7 @@ final class URLSessionHTTPClient {
             let request = try interceptors
                 .reduce(requestable) { result, interceptor in interceptor(result) }
                 .asURLRequest(baseURL: baseURL)
-            let (data, response) = try await session.data(for: request)
+            let (data, _) = try await session.data(for: request)
             return try decoder.decode(T.self, from: data)
         } catch {
             logger.debug("Failed to perform request: \(error)")
@@ -69,4 +69,3 @@ protocol HTTPResponseDecoder {
 
 extension JSONDecoder: HTTPResponseDecoder {}
 
-typealias HTTRequestInterceptor = (any URLRequestable) -> any URLRequestable
