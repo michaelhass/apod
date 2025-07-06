@@ -34,6 +34,8 @@ private struct WebPlayerView: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
         webView.navigationDelegate = context.coordinator
+        webView.configuration.allowsInlineMediaPlayback = true
+        webView.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         webView.load(URLRequest(url: url))
         return webView
     }
