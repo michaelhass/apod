@@ -29,9 +29,11 @@ The debug environment is authorized with a demo key, which only allows very limi
 You can obtain a API key here [NASA - sign up](https://api.nasa.gov/#signUp).
 
 ```
-// You can either change the default environment here or create a complete custom environment in case you hosted the api differently.
-extension APODEnvironment {
-    static var `default`: APODEnvironment {
+// You can either change the default environment here 
+// or create a complete custom environment in case the hosted api is different.
+// In Domain/AstronomyMedia/Service/AstronomyMediaEnvironment
+extension AstronomyMediaEnvironment {
+    static var `default`: AstronomyMediaEnvironment {
 #if DEBUG
         return .debug
 #else
