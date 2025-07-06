@@ -37,6 +37,9 @@ struct ShowToastViewModifier: ViewModifier {
                             try? await Task.sleep(for: .seconds(3))
                             self.message = nil
                         }
+                        .onTapGesture {
+                            self.message = nil
+                        }
                 } else {
                     EmptyView()
                 }

@@ -72,9 +72,10 @@ struct MediaEntryInfoSheet: View {
                     title: "Title",
                     url: URL(string: "https://duckduckgo.com")!,
                     date: .now,
-                    mediaType: "",
+                    mediaType: .image,
                     explanation: "Hello this is a longer text",
-                    copyright: "Copright \n text"
+                    copyright: "Copright \n text",
+                    thumbnailUrl: nil
                 )
             )
         }

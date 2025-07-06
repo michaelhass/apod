@@ -11,6 +11,8 @@ import Foundation
 final class AstronomyMedia: ObservableObject {
     @Published
     private(set) var mediaOfTheDay: AstronomyMediaEntry?
+    @Published
+    private(set) var videoOfTheDay: VideoResource?
 
     private let mediaService: AstronomyMediaService
 
@@ -20,5 +22,10 @@ final class AstronomyMedia: ObservableObject {
 
     func fetchMedia(for date: Date) async throws {
         mediaOfTheDay = try await mediaService.fetchMedia(for: date)
+        videoOfTheDay = if let mediaOfTheDay, mediaOfTheDay.mediaType == .video {
+            .init(url: mediaOfTheDay.url)
+        } else {
+            nil
+        }
     }
 }

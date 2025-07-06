@@ -26,7 +26,13 @@ struct MediaOfTheDayPage: View {
 
     var body: some View {
         ZStack {
-            imageView(for: astronomyMedia.mediaOfTheDay?.url)
+            if let mediaOfTheDay = astronomyMedia.mediaOfTheDay {
+                mainContent(mediaEntry: mediaOfTheDay, videoResource: astronomyMedia.videoOfTheDay)
+            } else if isRequesting {
+                StarProgressView(size: .large)
+            } else {
+               EmptyView()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .overlay(alignment: .topTrailing) {
@@ -41,6 +47,9 @@ struct MediaOfTheDayPage: View {
         })
         .task(id: selectedDate) {
             await handleChange(selectedDate: selectedDate)
+        }
+        .onDisappear {
+            astronomyMedia.videoOfTheDay?.player?.pause()
         }
     }
 
@@ -86,7 +95,18 @@ struct MediaOfTheDayPage: View {
         }
     }
 
-    func imageView(for url: URL?) -> some View {
+    @ViewBuilder
+    func mainContent(mediaEntry: AstronomyMediaEntry, videoResource: VideoResource?) -> some View {
+        if let videoResource, mediaEntry.mediaType == .video {
+            VideoPlayerView(videoResource: videoResource)
+        } else if let thumbnailUrl = mediaEntry.thumbnailUrl, mediaEntry.mediaType == .video {
+            imageView(url: thumbnailUrl)
+        } else {
+            imageView(url: mediaEntry.url)
+        }
+    }
+
+    func imageView(url: URL) -> some View {
         AsyncImage(url: url) { image in
             if let image = image.image {
                 image
@@ -104,16 +124,17 @@ struct MediaOfTheDayPage: View {
 
 extension MediaOfTheDayPage {
     func handleChange(selectedDate: Date?) async {
-        guard let selectedDate else {
-            self.selectedDate = astronomyMedia.mediaOfTheDay?.date ?? .now
-            return
-        }
-        let mediaOfTheDayDate = astronomyMedia.mediaOfTheDay?.date ?? .distantFuture
-        guard !selectedDate.isInSameDayAs(mediaOfTheDayDate) else { return }
-        guard !isRequesting else { return }
-        defer { isRequesting = false }
-        isRequesting = true
         do {
+            try await Task.sleep(for: .milliseconds(500))
+            guard let selectedDate else {
+                self.selectedDate = astronomyMedia.mediaOfTheDay?.date ?? .now
+                return
+            }
+            let mediaOfTheDayDate = astronomyMedia.mediaOfTheDay?.date ?? .distantFuture
+            guard !selectedDate.isInSameDayAs(mediaOfTheDayDate) else { return }
+            guard !isRequesting else { return }
+            defer { isRequesting = false }
+            isRequesting = true
             try await astronomyMedia.fetchMedia(for: selectedDate)
         } catch {
             guard !(error is CancellationError) else {

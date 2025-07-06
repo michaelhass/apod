@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AstronomyMediaType: String {
+enum AstronomyMediaType: String, Codable {
     case image
     case video
     case unkown
