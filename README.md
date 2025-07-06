@@ -12,6 +12,7 @@ More information: [Github nasa/apod-ai](https://github.com/nasa/apod-api)
 - Get astronomy media for a specific day
 - Display images
 - Display videos
+- Show media content (description, title, etc.) 
 - Web video player (youtube, vimeo)
 - Native video player
 - Cache latest response
