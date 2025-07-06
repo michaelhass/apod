@@ -28,16 +28,6 @@ struct VideoPlayerView: View {
     }
 }
 
-#Preview {
-//    let urlString = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-    let urlString = "https://www.youtube.com/embed/CC7OJ7gFLvE?rel=0"
-    let resource = VideoResource(urlString: urlString)!
-    return ZStack {
-        Color.green
-        VideoPlayerView(videoResource: resource)
-    }
-}
-
 private struct WebPlayerView: UIViewRepresentable {
     let url: URL
 
@@ -68,5 +58,15 @@ private final class WebPlayerCoordinator: NSObject, WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
         .allow
+    }
+}
+
+#Preview {
+    let urlString = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+//    let urlString = "https://www.youtube.com/embed/CC7OJ7gFLvE?rel=0"
+    let resource = VideoResource(urlString: urlString)!
+    return ZStack {
+        Color.green
+        VideoPlayerView(videoResource: resource)
     }
 }
