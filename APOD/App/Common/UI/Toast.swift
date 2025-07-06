@@ -9,8 +9,9 @@ import SwiftUI
 
 struct Toast: View {
     let message: String
+
     var body: some View {
-        Text(message)
+        Text(LocalizedStringKey(message))
             .frame(minWidth: 140)
             .lineLimit(1)
             .foregroundStyle(.secondaryActionText)
@@ -59,9 +60,10 @@ extension View {
             Color.clear
                 .showToast($message)
                 .onAppear {
-                    message = "Hello, World!"
+                    message = "An error occured"
                 }
         }
     }
     return TestView()
+        .environment(\.locale, Locale(identifier: "de"))
 }
