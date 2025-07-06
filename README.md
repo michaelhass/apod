@@ -8,6 +8,21 @@ While building the app, I tried to keep it simply and make use of SwiftUI's reac
 
 More information: [Github nasa/apod-ai](https://github.com/nasa/apod-api)
 
+## Features
+- Get astronomy media for a specific day
+- Display images
+- Display videos
+- Web video player (youtube, vimeo)
+- Native video player
+- Cache latest response
+- Dynamic sizing
+- Dark and light mode
+- iPhone & iPad support
+
+## Requirements
+- iOS 16 or newer
+- Swift 6
+
 ## How to run
 The debug environment is authorized with a demo key, which only allows very limitted hourly and daily requests.
 You can obtain a API key here [NASA - sign up](https://api.nasa.gov/#signUp).
