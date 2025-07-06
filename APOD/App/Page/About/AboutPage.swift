@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct AboutPage: View {
+    let links: [String] = [
+        "https://github.com/nasa/apod-api",
+        "https://apod.nasa.gov/apod/astropix.html",
+    ]
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: .verticalContentSpacing) {
@@ -16,14 +20,31 @@ struct AboutPage: View {
                     .foregroundStyle(.titleText)
                     .aligned(.leading)
 
-                Text("Hello, World!")
+                Text("This is small test project using SwiftUI.")
                     .font(.body)
                     .foregroundStyle(.primaryText)
                     .aligned(.leading)
+
+                Text("Links")
+                    .font(.title2)
+                    .foregroundStyle(.primaryText)
+                    .aligned(.leading)
+
+
+                ForEach(links, id: \.self) { link in
+                    Text(LocalizedStringKey(link))
+                        .font(.body)
+                        .foregroundStyle(.primaryText)
+                        .aligned(.leading)
+                }
             }
             .pageTopPadding()
             .horizontalContentPadding()
             .frame(maxWidth: .infinity)
         }
     }
+}
+
+#Preview {
+   AboutPage()
 }

@@ -2,10 +2,17 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-
+      "shouldTranslate" : false
     },
     "About" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
     },
     "An error occured" : {
       "extractionState" : "stale",
@@ -25,6 +32,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hallo, Welt!"
+          }
+        }
+      }
+    },
+    "Links" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Links"
+          }
+        }
+      }
+    },
+    "This is small test project using SwiftUI." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dies ist ein kleines Project für SwiftUI."
           }
         }
       }
