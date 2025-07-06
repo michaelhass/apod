@@ -23,8 +23,11 @@ struct APODApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainContentView()
-                .environmentObject(astronomyMedia)
+            MainTabView(initialTab: .apod, contentProviders: [
+                HomeTabContentProvider(),
+                AboutTabContentProvider()
+            ])
+            .environmentObject(astronomyMedia)
         }
     }
 }

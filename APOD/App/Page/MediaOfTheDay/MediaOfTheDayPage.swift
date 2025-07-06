@@ -49,12 +49,11 @@ struct MediaOfTheDayPage: View {
     @ViewBuilder
     func mediaOverlay(mediaEntry: MediaEntryTextFormatter?) -> some View {
         if let mediaEntry {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: .verticalContentSpacing) {
                 Text(mediaEntry.title)
                     .lineLimit(1)
                     .font(.title)
                     .foregroundStyle(Color.titleText)
-                    .shadow(color: .background, radius: 2)
 
                 HStack {
                     Spacer()
@@ -79,7 +78,8 @@ struct MediaOfTheDayPage: View {
                     .clipShape(Circle())
                 }
             }
-            .padding()
+            .pageTopPadding()
+            .horizontalContentPadding()
         } else {
             EmptyView()
         }

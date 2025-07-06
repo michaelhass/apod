@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension View {
-
     func aligned(_ alignment: Alignment) -> some View {
         self.frame(maxWidth: .infinity, alignment: alignment)
     }

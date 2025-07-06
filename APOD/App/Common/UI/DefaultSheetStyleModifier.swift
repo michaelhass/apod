@@ -23,7 +23,7 @@ struct DefaultSheetStyleModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .padding(.top, topContentPadding)
+            .pageTopPadding()
             .presentationDragIndicator(dragIndicatorVisibility)
             .presentationDetents([.medium])
             .presentationBackground(.thinMaterial)

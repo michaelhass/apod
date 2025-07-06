@@ -11,7 +11,7 @@ struct MediaEntryTextFormatter {
     let title: String
     let date: String
     let explanation: String
-    let copyright: String
+    let copyright: String?
 
     static var dateFormatter: DateFormatter {
         .medium
@@ -21,7 +21,7 @@ struct MediaEntryTextFormatter {
         self.title = mediaEntry.title
         self.date = Self.dateFormatter.string(from: mediaEntry.date)
         self.explanation = mediaEntry.explanation
-        self.copyright = mediaEntry.copyright.removedLineBreaks
+        self.copyright = mediaEntry.copyright?.removedLineBreaks
     }
 }
 
@@ -34,7 +34,7 @@ struct MediaEntryInfoSheet: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: .verticalContentSpacing) {
                 Text(mediaEntry.date)
                     .font(.callout)
                     .foregroundStyle(Color.secondaryText)
@@ -43,17 +43,22 @@ struct MediaEntryInfoSheet: View {
                 Text(mediaEntry.title)
                     .font(.title)
                     .foregroundStyle(Color.titleText)
+                    .aligned(.leading)
 
                 Text(mediaEntry.explanation)
                     .font(.body)
                     .foregroundStyle(Color.secondaryText)
+                    .aligned(.leading)
 
-                Text(mediaEntry.copyright)
-                    .font(.caption)
-                    .foregroundStyle(Color.secondaryText)
+                if let copyright = mediaEntry.copyright {
+                    Text(copyright)
+                        .font(.caption)
+                        .foregroundStyle(Color.secondaryText)
+                        .aligned(.leading)
+                }
 
             }
-            .padding(.horizontal)
+            .horizontalContentPadding()
         }
         .defaultSheetStyle()
     }

@@ -13,5 +13,5 @@ struct AstronomyMediaEntry: Decodable, Sendable {
     let date: Date
     let mediaType: String
     let explanation: String
-    let copyright: String
+    let copyright: String?
 }
