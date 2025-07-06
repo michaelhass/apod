@@ -32,7 +32,7 @@ final class AstronomyMedia: ObservableObject {
             }
             self.mediaOfTheDay = mediaOfTheDay
         } catch {
-            guard error is CancellationError else {
+            guard !(error is CancellationError) else {
                 return
             }
             throw error

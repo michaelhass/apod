@@ -2,9 +2,9 @@ import Foundation
 import Testing
 @testable import APOD
 
-struct APODEnvironmentTests {
+struct AstronomyMediaEnvironmentTest {
     @Test func testAPODEnvironmentProd() async throws {
-        let env = APODEnvironment.prod(apiKey: "test")
+        let env = AstronomyMediaEnvironment.prod(apiKey: "test")
         #expect(env.baseURL.absoluteString == "https://api.nasa.gov")
         #expect(env.prefixPath == "/planetary/apod")
         #expect(env.apiKey == "test")

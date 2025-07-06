@@ -10,7 +10,7 @@ import Foundation
 struct AstronomyMediaService {
     let httpClient: HTTPClient
 
-    static func createDefault(environment: APODEnvironment) -> AstronomyMediaService {
+    static func createDefault(environment: AstronomyMediaEnvironment) -> AstronomyMediaService {
         let interceptors = [
             HTTRequestInterceptor.append(queryItems: [.init(name: "api_key", value: environment.apiKey)]),
             HTTRequestInterceptor.prefixPath(environment.prefixPath),
