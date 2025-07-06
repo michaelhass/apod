@@ -3,8 +3,8 @@
 An App for displaying astronomy pictures for a specifc date.
 While building the app, I tried to keep it simply and make use of SwiftUI's reactive system.
 
-<img src="Images/apid_phone.png" width="100">
-<img src="Images/apod_pad.png" width="150">
+!(screenshot phone)[Images/apod_phone.png]
+!(screenshot tablet)[Images/apod_pad.png]
 
 More information: [Github nasa/apod-ai](https://github.com/nasa/apod-api?)
 
