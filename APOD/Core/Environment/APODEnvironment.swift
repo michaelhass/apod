@@ -19,3 +19,13 @@ extension APODEnvironment {
         .prod(apiKey: "DEMO_KEY")
     }
 }
+
+extension APODEnvironment {
+    static var `default`: APODEnvironment {
+#if DEBUG
+        return .debug
+#else
+        return .prod(apiKey: "CHANGE_ME")
+#endif
+    }
+}

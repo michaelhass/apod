@@ -10,15 +10,11 @@ import SwiftUI
 @main
 struct APODApp: App {
     let astronomyMedia: AstronomyMedia
+    let error: APODErrorModel
 
     init() {
-        #if DEBUG
-        let environment: APODEnvironment = .debug
-        #else
-        let environment: APODEnvironment = .prod(apiKey: "n6dYAadR3p9kGn4UDQcM4JNo5BKrYOl8tQlvTAcg")
-        #endif
-
-        self.astronomyMedia = .init(mediaService: .createDefault(environment: environment))
+        self.astronomyMedia = .init(mediaService: .createDefault(environment: .default))
+        self.error = .init()
     }
 
     var body: some Scene {
@@ -28,6 +24,7 @@ struct APODApp: App {
                 AboutTabContentProvider()
             ])
             .environmentObject(astronomyMedia)
+            .environmentObject(error)
         }
     }
 }

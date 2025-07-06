@@ -10,11 +10,15 @@ import SwiftUI
 struct MediaOfTheDayPage: View {
     @EnvironmentObject
     private var astronomyMedia: AstronomyMedia
+    @EnvironmentObject
+    private var error: APODErrorModel
 
     @State
     private var isPresentingInformation: Bool = false
     @State
     private var selectedDate: Date?
+    @State
+    private var isRequesting: Bool = false
 
     var formattedMediaEntry: MediaEntryTextFormatter? {
         astronomyMedia.mediaOfTheDay.map { MediaEntryTextFormatter(mediaEntry: $0) }
@@ -36,13 +40,7 @@ struct MediaOfTheDayPage: View {
             }
         })
         .task(id: selectedDate) {
-            guard let selectedDate else {
-                selectedDate = astronomyMedia.mediaOfTheDay?.date ?? .now
-                return
-            }
-            let mediaOfTheDayDate = astronomyMedia.mediaOfTheDay?.date ?? .distantFuture
-            guard !selectedDate.isInSameDayAs(mediaOfTheDayDate) else { return }
-            try? await astronomyMedia.fetchMedia(for: selectedDate)
+            await handleChange(selectedDate: selectedDate)
         }
     }
 
@@ -56,6 +54,9 @@ struct MediaOfTheDayPage: View {
                     .foregroundStyle(Color.titleText)
 
                 HStack {
+                    if isRequesting {
+                        StarProgressView(size: .small)
+                    }
                     Spacer()
 
                     DatePicker(
@@ -96,5 +97,29 @@ struct MediaOfTheDayPage: View {
             }
         }
         .zoomable()
+    }
+}
+
+// MARK: Data handling
+
+extension MediaOfTheDayPage {
+    func handleChange(selectedDate: Date?) async {
+        guard let selectedDate else {
+            self.selectedDate = astronomyMedia.mediaOfTheDay?.date ?? .now
+            return
+        }
+        let mediaOfTheDayDate = astronomyMedia.mediaOfTheDay?.date ?? .distantFuture
+        guard !selectedDate.isInSameDayAs(mediaOfTheDayDate) else { return }
+        guard !isRequesting else { return }
+        defer { isRequesting = false }
+        isRequesting = true
+        do {
+            try await astronomyMedia.fetchMedia(for: selectedDate)
+        } catch {
+            guard !(error is CancellationError) else {
+                return
+            }
+            self.error.message = "An error occured"
+        }
     }
 }

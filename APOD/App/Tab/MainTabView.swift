@@ -30,6 +30,9 @@ protocol MainTabContentProvider {
 }
 
 struct MainTabView: View {
+    @EnvironmentObject
+    private var error: APODErrorModel
+
     @State
     private var selectedTab: MainTab
     private let availableTabs: [MainTab]
@@ -54,6 +57,7 @@ struct MainTabView: View {
             MainTabBar(availableTabs: availableTabs, selectedTab: $selectedTab)
         }
         .background(Color.background)
+        .showToast($error.message)
     }
 
     @ViewBuilder
