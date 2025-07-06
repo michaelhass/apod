@@ -71,3 +71,5 @@ NOTE: Only pages should have direct access to objects passed via the `Environmen
 
 Domain independent views that can be reused.
 NOTE: Should not acces `Environment` to allow for easier reuse.
+
+<img src="Images/apod_structure.png" width="300">
