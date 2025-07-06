@@ -1,16 +1,8 @@
-//
-//  VideoResource.swift
-//  APOD
-//
-//  Created by Michael Haß on 06.07.25.
-//
-
+import Foundation
 import Testing
 @testable import APOD
 
-
 struct VideoResourceTests {
-
     struct WebResourceExpectation {
         let urlString: String
         let isWebVideo: Bool

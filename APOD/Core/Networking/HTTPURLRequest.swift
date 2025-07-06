@@ -27,7 +27,7 @@ extension HTTPURLRequestable {
     func asURLRequest(baseURL: URL) throws -> URLRequest {
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
         components?.path = path
-        components?.queryItems = query
+        components?.queryItems = query.isEmpty ? nil : query
         guard let url = components?.url else {
             throw HTTPError.badURL(message: "unable to create for \(self)")
         }
