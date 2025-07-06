@@ -21,11 +21,21 @@ final class AstronomyMedia: ObservableObject {
     }
 
     func fetchMedia(for date: Date) async throws {
-        mediaOfTheDay = try await mediaService.fetchMedia(for: date)
-        videoOfTheDay = if let mediaOfTheDay, mediaOfTheDay.mediaType == .video {
-            .init(url: mediaOfTheDay.url)
-        } else {
-            nil
+        do {
+            let mediaOfTheDay = try await mediaService.fetchMedia(for: date)
+            try Task.checkCancellation()
+
+            videoOfTheDay = if mediaOfTheDay.mediaType == .video {
+                .init(url: mediaOfTheDay.url)
+            } else {
+                nil
+            }
+            self.mediaOfTheDay = mediaOfTheDay
+        } catch {
+            guard error is CancellationError else {
+                return
+            }
+            throw error
         }
     }
 }

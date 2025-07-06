@@ -125,7 +125,7 @@ struct MediaOfTheDayPage: View {
 extension MediaOfTheDayPage {
     func handleChange(selectedDate: Date?) async {
         do {
-            try await Task.sleep(for: .milliseconds(500))
+            try? await Task.sleep(for: .milliseconds(500))
             guard let selectedDate else {
                 self.selectedDate = astronomyMedia.mediaOfTheDay?.date ?? .now
                 return
@@ -137,9 +137,6 @@ extension MediaOfTheDayPage {
             isRequesting = true
             try await astronomyMedia.fetchMedia(for: selectedDate)
         } catch {
-            guard !(error is CancellationError) else {
-                return
-            }
             self.error.message = "An error occured"
         }
     }
