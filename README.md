@@ -36,7 +36,7 @@ There are 3 main layers that make up the App.
 This layer contains the foundation for all parts of the code. The code can be shared and does not depend on any other part of the app.
 
 Examples:
-- Netwroking
+- Networking
 - Commonly used helpers
 
 ### Domain
